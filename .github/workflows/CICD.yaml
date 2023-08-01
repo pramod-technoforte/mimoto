@@ -1,7 +1,30 @@
-# .github/workflows/ci-cd.yaml
-name: CI/CD
+name: Restart Kubernetes Pod
 
-on: push
+on:
+  push:
+    branches:
+      - development
+  pull_request:
+    branches:
+      - development
 
 jobs:
-  (...)
+  restart-pod:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Kubernetes CLI
+        uses: azure/setup-kubectl@v1
+        with:
+          version: 'latest'
+
+      - name: Log in to Kubernetes Cluster
+        run: |
+          echo "$KUBECONFIG" > kubeconfig.yaml
+          kubectl config view --flatten > config.yaml
+          kubectl config --kubeconfig=config.yaml use-context <cluster-context>
+
+      - name: Restart Pod
+        run: |
+          kubectl rollout restart deployment/<deployment-name> -n <namespace>
+
