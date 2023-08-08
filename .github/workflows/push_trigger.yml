@@ -1,13 +1,13 @@
 
 name: Maven Package upon a push
 
-on:
-  push:
-    branches:
-      - master
-      - 1.*
-      - develop
-      - release*
+#on:
+#  push:
+#    branches:
+#      - master
+#      - 1.*
+#     - develop
+#      - release*
 
 jobs:
   build:
